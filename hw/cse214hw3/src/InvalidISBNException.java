@@ -1,0 +1,2 @@
+public class InvalidISBNException {
+}
