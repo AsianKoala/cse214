@@ -88,12 +88,13 @@ public class Shelf {
     }
 
     public void sort(SortCriteria sortCriteria) {
+        this.shelfSortCriteria = sortCriteria;
         while(!isSorted()) {
             Book cursor = headBook;
             Book prev = null;
             Book nxt = cursor.getNextBook();
             while(nxt != null) {
-                if(Book.compare(cursor, nxt, sortCriteria) > 0) {
+                if(Book.compare(cursor, nxt, shelfSortCriteria) > 0) {
                     if(prev != null) {
                         Book sig = nxt.getNextBook();
                         prev.setNextBook(nxt);

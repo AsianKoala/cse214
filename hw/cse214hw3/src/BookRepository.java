@@ -1,8 +1,12 @@
 public class BookRepository {
-    Shelf[] shelves;
+    // TODO: make this privatae
+    public Shelf[] shelves;
 
     public BookRepository() {
         shelves = new Shelf[10];
+        for(int i = 0; i < 10; i++) {
+            shelves[i] = new Shelf();
+        }
     }
 
     public boolean checkExists(long isbn) {

@@ -7,6 +7,7 @@ public class Book {
     private long checkOutUserID;
     private int yearPublished;
     private Date checkOutDate;
+    private Date dueDate;
     private Book nextBook;
     private boolean checkedOut;
 
@@ -19,8 +20,9 @@ public class Book {
         checkOutUserID = 0;
         yearPublished = 0;
         checkOutDate = new Date();
-        nextBook = null;
+        dueDate = new Date();
         checkedOut = false;
+        nextBook = null;
     }
 
     public Book(long ISBN) {
@@ -32,6 +34,7 @@ public class Book {
         checkOutUserID = 0;
         yearPublished = 0;
         checkOutDate = new Date();
+        dueDate = new Date();
         checkedOut = false;
         nextBook = null;
     }
@@ -45,11 +48,12 @@ public class Book {
         checkOutUserID = 0;
         yearPublished = 0;
         checkOutDate = new Date();
+        dueDate = new Date();
         checkedOut = false;
         nextBook = null;
     }
 
-    public Book(String name, String author, String genre, Condition bookCondition, long ISBN, long checkOutUserID, int yearPublished, Date checkOutDate, boolean checkedOut) {
+    public Book(String name, String author, String genre, Condition bookCondition, long ISBN, long checkOutUserID, int yearPublished, Date checkOutDate, Date dueDate, boolean checkedOut) {
         this.name = name;
         this.author = author;
         this.genre = genre;
@@ -58,6 +62,7 @@ public class Book {
         this.checkOutUserID = checkOutUserID;
         this.yearPublished = yearPublished;
         this.checkOutDate = checkOutDate;
+        this.dueDate = dueDate;
         this.checkedOut = checkedOut;
         this.nextBook = null;
     }
@@ -92,6 +97,10 @@ public class Book {
 
     public Date getCheckOutDate() {
         return checkOutDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
     }
 
     public Book getNextBook() {
@@ -134,6 +143,10 @@ public class Book {
         this.checkOutDate = checkOutDate;
     }
 
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
     public void setNextBook(Book nextBook) {
         this.nextBook = nextBook;
     }
@@ -154,7 +167,7 @@ public class Book {
             case AUTHOR:
                 return a.getAuthor().compareTo(b.getAuthor());
             case CONDITION:
-                return a.getBookCondition().compareTo(b.getBookCondition());
+                return Condition.compare(a.getBookCondition(), b.getBookCondition());
         }
         return 0;
     }
