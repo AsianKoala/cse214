@@ -1,2 +1,2 @@
-public class InvalidISBNException {
+public class InvalidISBNException extends Exception {
 }

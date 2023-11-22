@@ -1,2 +1,2 @@
-public class BookNotCheckedOutException {
+public class BookNotCheckedOutException extends Exception {
 }

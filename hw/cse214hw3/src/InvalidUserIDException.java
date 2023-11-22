@@ -1,2 +1,2 @@
-public class InvalidUserIDException {
+public class InvalidUserIDException extends Exception {
 }

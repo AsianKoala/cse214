@@ -1,2 +1,2 @@
-public class BookCheckedOutBySomeoneElseException {
+public class BookCheckedOutBySomeoneElseException extends Exception {
 }

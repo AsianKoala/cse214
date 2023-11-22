@@ -23,6 +23,32 @@ public class Book {
         checkedOut = false;
     }
 
+    public Book(long ISBN) {
+        this.ISBN = ISBN;
+        name = "";
+        author = "";
+        genre = "";
+        bookCondition = Condition.GOOD;
+        checkOutUserID = 0;
+        yearPublished = 0;
+        checkOutDate = new Date();
+        checkedOut = false;
+        nextBook = null;
+    }
+
+    public Book(String name, String author, String genre, Condition bookCondition, long ISBN) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.bookCondition = bookCondition;
+        this.ISBN = ISBN;
+        checkOutUserID = 0;
+        yearPublished = 0;
+        checkOutDate = new Date();
+        checkedOut = false;
+        nextBook = null;
+    }
+
     public Book(String name, String author, String genre, Condition bookCondition, long ISBN, long checkOutUserID, int yearPublished, Date checkOutDate, boolean checkedOut) {
         this.name = name;
         this.author = author;
@@ -33,6 +59,7 @@ public class Book {
         this.yearPublished = yearPublished;
         this.checkOutDate = checkOutDate;
         this.checkedOut = checkedOut;
+        this.nextBook = null;
     }
 
     public String getName() {
@@ -115,12 +142,20 @@ public class Book {
         this.checkedOut = checkedOut;
     }
 
-    public static boolean isGreater(Book a, Book b, SortCriteria c) {
+    // pos if a > b, 0 of a == b, neg if a < b
+    public static int compare(Book a, Book b, SortCriteria c) {
         switch (c) {
             case ISBN:
-                return a.getISBN() > b.getISBN();
+                return Long.compare(a.getISBN(), b.getISBN());
             case NAME:
-                return a.getName().compareTo(b.getName()) >= 0;
+                return a.getName().compareTo(b.getName());
+            case GENRE:
+                return a.getGenre().compareTo(b.getGenre());
+            case AUTHOR:
+                return a.getAuthor().compareTo(b.getAuthor());
+            case CONDITION:
+                return a.getBookCondition().compareTo(b.getBookCondition());
         }
+        return 0;
     }
 }

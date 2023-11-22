@@ -1,2 +1,2 @@
-public class BookDoesNotExistException {
+public class BookDoesNotExistException extends Exception {
 }

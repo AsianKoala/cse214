@@ -1,2 +1,2 @@
-public class InvalidReturnDateException {
+public class InvalidReturnDateException extends Exception {
 }

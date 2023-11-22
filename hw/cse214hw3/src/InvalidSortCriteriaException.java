@@ -1,2 +1,2 @@
-public class InvalidSortCriteriaException {
+public class InvalidSortCriteriaException extends Exception {
 }
