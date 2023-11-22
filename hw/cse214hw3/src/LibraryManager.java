@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class LibraryManager {
     private static BookRepository bookRepository;
+    private static ReturnStack returnStack;
     private static Scanner s;
 
     private static void printMenu() {
@@ -30,19 +31,20 @@ public class LibraryManager {
 
     private static void handleCheckoutBook() {
         try {
+            System.out.println("Loading...");
             String id, isbn;
             Date dueDate, checkoutDate;
 
             System.out.print("Please provide a library user ID: ");
             id = s.next().trim();
-            if(!Util.isValidUserID(id)) {
+            if(Util.isInvalidUserID(id)) {
                 System.out.println("Error: Invalid UserID provided");
                 return;
             }
 
             System.out.print("Please provide an ISBN number: ");
             isbn = s.next().trim();
-            if(!Util.isValidISBN(isbn)) {
+            if(Util.isInvalidISBN(isbn)) {
                 System.out.println("Error: Invalid ISBN provided");
                 return;
             }
@@ -53,7 +55,6 @@ public class LibraryManager {
             System.out.print("Please provide the checkout date (current date): ");
             checkoutDate = Util.parseDateString(s.next().trim());
 
-            System.out.println("Loading...");
             bookRepository.checkOutBook(Util.convertISBNToLong(isbn), Util.convertIDToLong(id), dueDate, checkoutDate);
         } catch(Exception e) {
             System.out.println(e.getMessage());
@@ -62,13 +63,14 @@ public class LibraryManager {
 
     private static void handleAddNewBook() {
         try {
+            System.out.println("Loading...");
             long isbn;
             String name, author, genre, condStr;
             Condition cond;
 
             System.out.print("Please provide an ISBN number: ");
             String input = s.next().trim();
-            if(!Util.isValidISBN(input)) {
+            if(Util.isInvalidISBN(input)) {
                 throw new InvalidISBNException("Error: Invalid ISBN provided");
             }
             isbn = Util.convertISBNToLong(input);
@@ -86,7 +88,6 @@ public class LibraryManager {
             condStr = s.next().trim();
             cond = Condition.parseString(condStr);
 
-            System.out.println("Loading...");
             bookRepository.addBook(isbn, name, author, genre, cond);
 
             // TODO ADD SUCCESS STATEMENTS
@@ -97,10 +98,11 @@ public class LibraryManager {
 
     private static void handleRemoveBook() {
         try {
+            System.out.println("Loading...");
             String isbn;
             System.out.print("Please provide an ISBN number: ");
             isbn = s.next().trim();
-            if(!Util.isValidISBN(isbn)) {
+            if(Util.isInvalidISBN(isbn)) {
                 throw new InvalidISBNException("Error: Invalid ISBN provided");
             }
             bookRepository.removeBook(Util.convertISBNToLong(isbn));
@@ -111,6 +113,7 @@ public class LibraryManager {
 
     private static void handlePrintRepo() {
         try {
+            System.out.println("Loading...");
             String shelf;
             System.out.print("Please select a shelf: ");
             shelf = s.next().trim();
@@ -123,6 +126,7 @@ public class LibraryManager {
 
     private static void handleSortShelf() {
         try {
+            System.out.println("Loading...");
             String shelf, sc;
             System.out.print("Please select a shelf: ");
             shelf = s.next().trim();
@@ -159,7 +163,86 @@ public class LibraryManager {
         }
     }
 
+    private static void handleReturnBook() {
+        try {
+            System.out.println("Loading...");
+            String id, isbn;
+            Date currentDate;
+
+            System.out.print("Please provide the ISBN number of the book you're returning: ");
+            isbn = s.next().trim();
+            if(Util.isInvalidISBN(isbn)) {
+                System.out.println("Error: Invalid ISBN provided");
+                return;
+            }
+
+            System.out.print("Please provide your UserID: ");
+            id = s.next().trim();
+            if(Util.isInvalidUserID(id)) {
+                System.out.println("Error: Invalid UserID provided");
+                return;
+            }
+
+            System.out.print("Please provide the current date: ");
+            currentDate = Util.parseDateString(s.next().trim());
+            long isbnLong = Util.convertISBNToLong(isbn);
+
+            boolean isLate = returnStack.pushLog(isbnLong, Util.convertIDToLong(id), currentDate, bookRepository);
+            Book book = bookRepository.fetch(isbnLong);
+
+            if(isLate) {
+                System.out.println(book.getName() + " has been returned LATE! Checking everything in...");
+                while(!returnStack.isEmpty()) {
+                    returnStack.popLog(bookRepository);
+                }
+            } else {
+                System.out.println(book.getName() + " has been returned on time!");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void handleSeeLastReturn() {
+        try {
+            System.out.println("Loading...");
+            long isbn = returnStack.peekLog().getISBN();
+            Book book = bookRepository.fetch(isbn);
+            System.out.println(book.getName() + " is the next book to be checked in.");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void handleCheckInLastReturn() {
+        try {
+            System.out.println("Loading...");
+            long isbn = returnStack.popLog(bookRepository).getISBN();
+            Book book = bookRepository.fetch(isbn);
+            System.out.println(book.getName() + " has been checked in.");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private static void handleReturnStack() {
+        System.out.print("Please select an option: ");
+        String input = s.next().trim();
+        switch (input) {
+            case "R":
+                handleReturnBook();
+                break;
+            case "L":
+                handleSeeLastReturn();
+                break;
+            case "C":
+                handleCheckInLastReturn();
+                break;
+            case "P":
+                System.out.print(returnStack.toString());
+            default:
+                System.out.println("The input you entered is incorrect. Please try again!");
+        }
     }
 
     private static boolean runMenu() {
@@ -182,6 +265,7 @@ public class LibraryManager {
 
     public static void main(String[] args) {
         bookRepository = new BookRepository();
+        returnStack = new ReturnStack();
         s = new Scanner(System.in).useDelimiter("\\n");
         System.out.println("Starting...");
         boolean isRunning = true;

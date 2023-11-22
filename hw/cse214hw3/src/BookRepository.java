@@ -9,28 +9,31 @@ public class BookRepository {
         }
     }
 
-    public boolean checkExists(long isbn) {
+    public boolean checkDoesNotExist(long isbn) {
         int first = Util.getISBNFirstSignificantDigit(isbn);
-        return shelves[first].checkExists(isbn);
+        return !shelves[first].checkExists(isbn);
     }
 
-    public Book fetch(long isbn) {
+    public Book fetch(long isbn) throws BookDoesNotExistException {
         int first = Util.getISBNFirstSignificantDigit(isbn);
+        if(checkDoesNotExist(isbn)) {
+            throw new BookDoesNotExistException("Error: Book does not exist");
+        }
         return shelves[first].fetch(isbn);
     }
 
     // TODO: why does this have checkInUserID lol?
-    public void checkInBook(long checkedInISBN, long checkInUserID) {
+    public void checkInBook(long checkedInISBN, long checkInUserID) throws BookDoesNotExistException {
         int first = Util.getISBNFirstSignificantDigit(checkedInISBN);
         shelves[first].checkIn(checkedInISBN);
     }
 
     // TODO: FIGURE OUT WTF DUEDATE AND CHECKOUT DATE ARE SUPPOSED TO DO???????/
     public void checkOutBook(long checkedOutISBN, long checkOutUserID, Date dueDate, Date checkOutDate) throws InvalidISBNException, InvalidUserIDException, BookAlreadyCheckedOutException {
-        if(!Util.isValidISBN(checkedOutISBN)) {
+        if(Util.isInvalidISBN(checkedOutISBN)) {
             throw new InvalidISBNException();
         }
-        if(!Util.isValidUserID(checkOutUserID)) {
+        if(Util.IsInvalidUserID(checkOutUserID)) {
             throw new InvalidUserIDException();
         }
         int first = Util.getISBNFirstSignificantDigit(checkedOutISBN);
@@ -41,7 +44,7 @@ public class BookRepository {
     }
 
     public void addBook(long addISBN, String addName, String addAuthor, String addGenre, Condition addCondition) throws InvalidISBNException, BookAlreadyExistsException {
-        if(!Util.isValidISBN(addISBN)) {
+        if(Util.isInvalidISBN(addISBN)) {
             throw new InvalidISBNException();
         }
         int first = Util.getISBNFirstSignificantDigit(addISBN);
@@ -49,7 +52,7 @@ public class BookRepository {
     }
 
     public void removeBook(long removeISBN) throws InvalidISBNException, BookDoesNotExistException {
-        if(!Util.isValidISBN(removeISBN)) {
+        if(Util.isInvalidISBN(removeISBN)) {
             throw new InvalidISBNException();
         }
         int first = Util.getISBNFirstSignificantDigit(removeISBN);

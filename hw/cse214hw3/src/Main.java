@@ -25,7 +25,7 @@ public class Main {
     private static void isbnTesting() {
         long test = 123456789012L;
         String isbn = Util.convertISBNToString(test);
-        System.out.println(Util.isValidISBN(isbn));
+//        System.out.println(Util.isValidISBN(isbn));
         System.out.println(isbn);
         long test2 = 213456789;
         isbn = Util.convertISBNToString(test2);

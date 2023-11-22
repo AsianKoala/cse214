@@ -1,17 +1,17 @@
 public class Util {
     // MUST BE 13 DIGITS!
-    public static boolean isValidISBN(String s) {
-        if(s.length() > 13) return false;
+    public static boolean isInvalidISBN(String s) {
+        if(s.length() > 13) return true;
         for(int i = 0; i < s.length(); i++) {
             if(!Character.isDigit(s.charAt(i))) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    public static boolean isValidISBN(long s) {
-        return isValidISBN(convertISBNToString(s));
+    public static boolean isInvalidISBN(long s) {
+        return isInvalidISBN(convertISBNToString(s));
     }
 
     public static String convertISBNToString(long s) {
@@ -46,14 +46,14 @@ public class Util {
         return getISBNFirstSignificantDigit(convertISBNToString(l));
     }
 
-    public static boolean isValidUserID(String s) {
-        if(s.length() > 10) return false;
+    public static boolean isInvalidUserID(String s) {
+        if(s.length() > 10) return true;
         for(int i = 0; i < s.length(); i++) {
             if(!Character.isDigit(s.charAt(i))) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public static String convertIDToString(long id) {
@@ -64,8 +64,8 @@ public class Util {
         return Long.parseLong(id);
     }
 
-    public static boolean isValidUserID(long id) {
-        return isValidUserID(convertIDToString(id));
+    public static boolean IsInvalidUserID(long id) {
+        return isInvalidUserID(convertIDToString(id));
     }
 
     public static String convertGoodCase(String s) {

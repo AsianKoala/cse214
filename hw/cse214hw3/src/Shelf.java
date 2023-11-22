@@ -3,6 +3,7 @@ public class Shelf {
     private Book tailBook;
     private int length;
     private SortCriteria shelfSortCriteria;
+    private final int defaultPadding = 25;
 
     public Shelf() {
         length = 0;
@@ -56,11 +57,10 @@ public class Shelf {
         }
     }
 
-
     // TODO: CHECK THAT IT SHOULD BE A LONG?
     // TODO: in doc it said it should be a String
     public void removeBook(String removedISBN) throws InvalidISBNException, BookDoesNotExistException {
-        if(!Util.isValidISBN(removedISBN)) {
+        if(Util.isInvalidISBN(removedISBN)) {
             throw new InvalidISBNException();
         }
         long isbn = Util.convertISBNToLong(removedISBN);
@@ -131,8 +131,10 @@ public class Shelf {
         this.shelfSortCriteria = shelfSortCriteria;
     }
 
-    public void checkIn(long isbn) {
-        if(!checkExists(isbn)) return;
+    public void checkIn(long isbn) throws BookDoesNotExistException {
+        if(!checkExists(isbn)) {
+            throw new BookDoesNotExistException("Error: Book does not exist");
+        }
         fetch(isbn).setCheckedOut(false);
     }
 
@@ -158,7 +160,6 @@ public class Shelf {
         }
     }
 
-    private final int defaultPadding = 25;
 
     private String centerString(String s) {
         int rightPadding = s.length() + ((defaultPadding - s.length()) / 2);
