@@ -47,10 +47,28 @@ public class Util {
     }
 
     public static boolean isValidUserID(String s) {
+        if(s.length() != 10) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(!Character.isDigit(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    public static String convertIDToString(long id) {
+        StringBuilder str = new StringBuilder();
+        str.append(id);
+        return str.toString();
     }
 
     public static boolean isValidUserID(long id) {
-        
+        long tmp = id;
+        int cnt = 0;
+        while(tmp > 0) {
+            cnt++;
+            tmp /= 10;
+        }
+        return cnt == 10;
     }
 }

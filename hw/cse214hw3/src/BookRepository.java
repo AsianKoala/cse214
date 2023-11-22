@@ -12,14 +12,22 @@ public class BookRepository {
 
     public void checkInBook(long checkedInISBN, long checkInUserID) {
         int first = Util.getISBNFirstSignificantDigit(checkedInISBN);
+        shelves[first].checkIn(checkedInISBN);
     }
 
-    public void checkOutBook(long checkedOutISBN, long checkOutUserID, Date dueDate) throws InvalidISBNException, InvalidUserIDException, BookAlreadyExistsException {
+    // TODO: FIGURE OUT WTF DUEDATE AND CHECKOUT DATE ARE SUPPOSED TO DO???????/
+    public void checkOutBook(long checkedOutISBN, long checkOutUserID, Date dueDate) throws InvalidISBNException, InvalidUserIDException, BookAlreadyCheckedOutException {
         if(!Util.isValidISBN(checkedOutISBN)) {
             throw new InvalidISBNException();
         }
-        if(!Util.us)
+        if(!Util.isValidUserID(checkOutUserID)) {
+            throw new InvalidUserIDException();
+        }
         int first = Util.getISBNFirstSignificantDigit(checkedOutISBN);
+        if(shelves[first].isCheckedOut(checkedOutISBN)) {
+            throw new BookAlreadyCheckedOutException();
+        }
+        shelves[first].checkOut(checkedOutISBN, checkOutUserID, dueDate);
     }
 
     public void addBook(long addISBN, String addName, String addAuthor, String addGenre, Condition addCondition) throws InvalidISBNException, BookAlreadyExistsException {
@@ -30,7 +38,7 @@ public class BookRepository {
         shelves[first].addBook(new Book(addName, addAuthor, addGenre, addCondition, addISBN));
     }
 
-    public void removeBook(long removeISBN) throws InvalidISBNException {
+    public void removeBook(long removeISBN) throws InvalidISBNException, BookDoesNotExistException {
         if(!Util.isValidISBN(removeISBN)) {
             throw new InvalidISBNException();
         }
