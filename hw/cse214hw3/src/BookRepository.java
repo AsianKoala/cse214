@@ -14,13 +14,19 @@ public class BookRepository {
         return shelves[first].checkExists(isbn);
     }
 
+    public Book fetch(long isbn) {
+        int first = Util.getISBNFirstSignificantDigit(isbn);
+        return shelves[first].fetch(isbn);
+    }
+
+    // TODO: why does this have checkInUserID lol?
     public void checkInBook(long checkedInISBN, long checkInUserID) {
         int first = Util.getISBNFirstSignificantDigit(checkedInISBN);
         shelves[first].checkIn(checkedInISBN);
     }
 
     // TODO: FIGURE OUT WTF DUEDATE AND CHECKOUT DATE ARE SUPPOSED TO DO???????/
-    public void checkOutBook(long checkedOutISBN, long checkOutUserID, Date dueDate) throws InvalidISBNException, InvalidUserIDException, BookAlreadyCheckedOutException {
+    public void checkOutBook(long checkedOutISBN, long checkOutUserID, Date dueDate, Date checkOutDate) throws InvalidISBNException, InvalidUserIDException, BookAlreadyCheckedOutException {
         if(!Util.isValidISBN(checkedOutISBN)) {
             throw new InvalidISBNException();
         }
@@ -31,7 +37,7 @@ public class BookRepository {
         if(shelves[first].isCheckedOut(checkedOutISBN)) {
             throw new BookAlreadyCheckedOutException();
         }
-        shelves[first].checkOut(checkedOutISBN, checkOutUserID, dueDate);
+        shelves[first].checkOut(checkedOutISBN, checkOutUserID, dueDate, checkOutDate);
     }
 
     public void addBook(long addISBN, String addName, String addAuthor, String addGenre, Condition addCondition) throws InvalidISBNException, BookAlreadyExistsException {
@@ -53,5 +59,9 @@ public class BookRepository {
     public void sortShelf(int shelfInd, String sortCriteria) throws InvalidSortCriteriaException {
         SortCriteria sc = SortCriteria.convertStringToEnum(sortCriteria);
         shelves[shelfInd].sort(sc);
+    }
+
+    public void printShelf(int shelfInd) {
+        shelves[shelfInd].printTable();
     }
 }

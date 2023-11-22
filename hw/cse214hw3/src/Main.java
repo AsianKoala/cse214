@@ -3,7 +3,9 @@ public class Main {
         try {
 //            shelfTesting();
 //            isbnTesting();
-            repoTesting();
+//            repoTesting();
+//            dateTesting();
+            testRandom();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -12,11 +14,12 @@ public class Main {
     private static void shelfTesting() throws BookAlreadyExistsException, InvalidISBNException, BookDoesNotExistException {
         Shelf s = new Shelf();
         for(int i = 1; i < 5; i++) s.addBook(new Book(i));;
-        s.print();
         s.removeBook("3");
-        s.print();
-        s.removeBook("1");
-        s.print();
+        s.printTable();
+        s.checkOut(1L, 1234567890L, new Date(31, 8, 2004), new Date(30, 8, 2004));
+        s.printTable();
+        s.checkIn(1L);
+        s.printTable();
     }
 
     private static void isbnTesting() {
@@ -38,5 +41,23 @@ public class Main {
         repo.shelves[1].print();
         repo.sortShelf(1, "N");
         repo.shelves[1].print();
+    }
+
+    private static void dateTesting() {
+        Date d1 = new Date(30, 8, 2004);
+        Date d2 = new Date(31, 8, 2004);
+        System.out.println(Date.compare(d1, d2));
+    }
+
+    private static void testRandom() {
+//        String s = "NAME";
+//        String good = Util.convertGoodCase(s);
+//        System.out.println(good);
+//        Character c = '9';
+//        int val = c - '0';
+//        System.out.println(val);
+        String a = "morean";
+        String b = "neil";
+        System.out.println(a.compareTo(b));
     }
 }

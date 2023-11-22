@@ -47,7 +47,7 @@ public class Util {
     }
 
     public static boolean isValidUserID(String s) {
-        if(s.length() != 10) return false;
+        if(s.length() > 10) return false;
         for(int i = 0; i < s.length(); i++) {
             if(!Character.isDigit(s.charAt(i))) {
                 return false;
@@ -57,18 +57,43 @@ public class Util {
     }
 
     public static String convertIDToString(long id) {
-        StringBuilder str = new StringBuilder();
-        str.append(id);
-        return str.toString();
+        return String.valueOf(id);
+    }
+
+    public static long convertIDToLong(String id) {
+        return Long.parseLong(id);
     }
 
     public static boolean isValidUserID(long id) {
-        long tmp = id;
-        int cnt = 0;
-        while(tmp > 0) {
-            cnt++;
-            tmp /= 10;
+        return isValidUserID(convertIDToString(id));
+    }
+
+    public static String convertGoodCase(String s) {
+        String lower = s.toLowerCase();
+        String res = lower.substring(1);
+        res = Character.toUpperCase(s.charAt(0)) + res;
+        return res;
+    }
+
+    public static Date parseDateString(String s) throws InvalidDateException {
+        String[] components = s.split("/");
+        if(components.length != 3) {
+            throw new InvalidDateException("Error: Invalid Date provided");
         }
-        return cnt == 10;
+        try {
+            int month = Integer.parseInt(components[0]);
+            int day = Integer.parseInt(components[1]);
+            int year = Integer.parseInt(components[2]);
+            return new Date(day, month, year);
+        } catch(Exception e) {
+            throw new InvalidDateException("Error: Invalid Date provided");
+        }
+    }
+
+    public static int parseShelfString(String s) throws InvalidShelfException {
+        if(s.length() != 1 || !Character.isDigit(s.charAt(0))) {
+            throw new InvalidShelfException("Error: Invalid Shelf provided");
+        }
+        return s.charAt(0) - '0';
     }
 }

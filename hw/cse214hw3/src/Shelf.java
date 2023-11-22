@@ -10,7 +10,7 @@ public class Shelf {
     }
 
     // pre-condition: isbn exists within shelf
-    private Book fetch(long isbn) {
+    public Book fetch(long isbn) {
         Book cursor = headBook;
         while(cursor.getISBN() != isbn) {
             cursor = cursor.getNextBook();
@@ -136,11 +136,13 @@ public class Shelf {
         fetch(isbn).setCheckedOut(false);
     }
 
-    public void checkOut(long isbn, long checkedOutUserID, Date dueDate) {
+    // TODO: CHECK IF WE ACTUALLY SHOULD ADD A CHECKOUT DATE
+    public void checkOut(long isbn, long checkedOutUserID, Date dueDate, Date checkOutDate) {
         Book node = fetch(isbn);
         node.setCheckedOut(true);
         node.setCheckOutUserID(checkedOutUserID);
-        node.setCheckOutDate(dueDate);
+        node.setDueDate(dueDate);
+        node.setCheckOutDate(checkOutDate);
     }
 
     public boolean isCheckedOut(long isbn) {
@@ -154,5 +156,60 @@ public class Shelf {
             System.out.println(cursor.getISBN());
             cursor = cursor.getNextBook();
         }
+    }
+
+    private final int defaultPadding = 25;
+
+    private String centerString(String s) {
+        int rightPadding = s.length() + ((defaultPadding - s.length()) / 2);
+        String leftStr = "%-" + defaultPadding + "s";
+        String rightStr = "%" + rightPadding + "s";
+        return String.format(leftStr, String.format(rightStr, s));
+    }
+
+    private void printHeader() {
+        int menuWidth = defaultPadding * 4 + defaultPadding / 2;
+        for(int i = 0; i < menuWidth; i++) {
+            System.out.print("=");
+            if(i == menuWidth - 1) {
+                System.out.print("\n");
+            }
+        }
+    }
+
+    private String getBooksShelfSortStringVal(Book book) {
+        switch (shelfSortCriteria) {
+            case CONDITION:
+                return book.getBookCondition().name();
+            case AUTHOR:
+                return book.getAuthor();
+            case GENRE:
+                return book.getGenre();
+            case NAME:
+                return book.getName();
+            case ISBN:
+                return Util.convertISBNToString(book.getISBN());
+        }
+        return "";
+    }
+
+    // TODO: this should be toString()
+    public void printTable() {
+        System.out.println("\nLoading...\n");
+        printHeader();
+        String format = "| %s | %s | %s | %s |\n";
+        String scString = Util.convertGoodCase(shelfSortCriteria.name());
+        System.out.format(format, centerString(scString), centerString("Checked Out"), centerString("Checked Out Date"), centerString("Checkout UserID"));
+        printHeader();
+        Book cursor = headBook;
+        while(cursor != null) {
+            String scVal = centerString(getBooksShelfSortStringVal(cursor));
+            String checkedOut = centerString(cursor.isCheckedOut() ? "Y" : "N");
+            String checkOutDate = centerString(cursor.isCheckedOut() ? cursor.getCheckOutDate().toString() : "N/A");
+            String checkOutUserID = centerString(cursor.isCheckedOut() ? Util.convertIDToString(cursor.getCheckOutUserID()) : "N/A");
+            System.out.format(format, scVal, checkedOut, checkOutDate, checkOutUserID);
+            cursor = cursor.getNextBook();
+        }
+        printHeader();
     }
 }
