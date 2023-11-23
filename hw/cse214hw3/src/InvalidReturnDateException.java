@@ -3,7 +3,7 @@
  */
 public class InvalidReturnDateException extends Exception {
     public InvalidReturnDateException() {
-        super("Error: Invalid return date");
+        super("Error: Invalid Return date");
     }
 
     public InvalidReturnDateException(String message) {

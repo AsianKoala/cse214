@@ -70,7 +70,7 @@ public class Shelf {
      */
     public void addBook(Book addedBook) throws BookAlreadyExistsException {
         if(checkExists(addedBook.getISBN())) {
-            throw new BookAlreadyExistsException("Book already exists");
+            throw new BookAlreadyExistsException();
         }
         length++;
         if(length == 1) {
@@ -119,6 +119,7 @@ public class Shelf {
             trail = cursor;
             cursor = cursor.getNextBook();
         }
+        length--;
     }
 
     /**
@@ -173,7 +174,7 @@ public class Shelf {
      */
     public void checkIn(long isbn) throws BookDoesNotExistException {
         if(!checkExists(isbn)) {
-            throw new BookDoesNotExistException("Error: Book does not exist");
+            throw new BookDoesNotExistException();
         }
         fetch(isbn).setCheckedOut(false);
     }

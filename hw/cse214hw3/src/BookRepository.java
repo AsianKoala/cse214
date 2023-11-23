@@ -95,12 +95,12 @@ public class BookRepository {
      * @throws InvalidISBNException Thrown if the given ISBN is not in a valid format
      * @throws BookAlreadyExistsException   Thrown if that ISBN already exists for some book within the repository
      */
-    public void addBook(long addISBN, String addName, String addAuthor, String addGenre, Condition addCondition) throws InvalidISBNException, BookAlreadyExistsException {
+    public void addBook(long addISBN, String addName, String addAuthor, String addGenre, Condition addCondition, int yearPublished) throws InvalidISBNException, BookAlreadyExistsException {
         if(Util.isInvalidISBN(addISBN)) {
             throw new InvalidISBNException();
         }
         int first = Util.getISBNFirstSignificantDigit(addISBN);
-        shelves[first].addBook(new Book(addName, addAuthor, addGenre, addCondition, addISBN));
+        shelves[first].addBook(new Book(addName, addAuthor, addGenre, addCondition, addISBN, yearPublished));
     }
 
     /**

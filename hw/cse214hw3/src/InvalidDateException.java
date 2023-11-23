@@ -3,7 +3,7 @@
  */
 public class InvalidDateException extends Exception {
     public InvalidDateException() {
-        super("Error: Invalid Date");
+        super("Error: Invalid Date Provided");
     }
 
     public InvalidDateException(String message) {

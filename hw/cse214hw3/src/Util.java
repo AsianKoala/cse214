@@ -94,7 +94,7 @@ public class Util {
     public static Date parseDateString(String s) throws InvalidDateException {
         String[] components = s.split("/");
         if(components.length != 3) {
-            throw new InvalidDateException("Error: Invalid Date provided");
+            throw new InvalidDateException();
         }
         try {
             int month = Integer.parseInt(components[0]);
@@ -102,7 +102,7 @@ public class Util {
             int year = Integer.parseInt(components[2]);
             return new Date(day, month, year);
         } catch(Exception e) {
-            throw new InvalidDateException("Error: Invalid Date provided");
+            throw new InvalidDateException();
         }
     }
 
@@ -110,7 +110,7 @@ public class Util {
     // If a shelf string is invalid, we'll throw an InvalidShelfException
     public static int parseShelfString(String s) throws InvalidShelfException {
         if(s.length() != 1 || !Character.isDigit(s.charAt(0))) {
-            throw new InvalidShelfException("Error: Invalid Shelf provided");
+            throw new InvalidShelfException();
         }
         return s.charAt(0) - '0';
     }

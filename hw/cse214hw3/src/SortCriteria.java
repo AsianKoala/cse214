@@ -6,7 +6,8 @@ public enum SortCriteria {
     NAME,
     AUTHOR,
     GENRE,
-    CONDITION;
+    CONDITION,
+    YEAR;
 
     /**
      * Converts a given string into its respective sorting criteria
@@ -26,6 +27,8 @@ public enum SortCriteria {
                 return SortCriteria.GENRE;
             case "C":
                 return SortCriteria.CONDITION;
+            case "Y":
+                return SortCriteria.YEAR;
         }
         throw new InvalidSortCriteriaException();
     }

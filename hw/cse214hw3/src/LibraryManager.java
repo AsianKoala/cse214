@@ -27,7 +27,7 @@ public class LibraryManager {
         System.out.println("\t\t (Y) - Year");
         System.out.println("\t\t (C) - Condition");
         System.out.println("(R) - Manage Return Stack");
-        System.out.println("\t (L) - Return Book");
+        System.out.println("\t (R) - Return Book");
         System.out.println("\t (L) - See Last Return");
         System.out.println("\t (C) - Check In Last Return");
         System.out.println("\t (P) - Print Return Stack");
@@ -64,7 +64,7 @@ public class LibraryManager {
             System.out.print("Please provide the checkout date (current date): ");
             checkoutDate = Util.parseDateString(s.next().trim());
 
-            System.out.println("Loading...");
+            System.out.println("\nLoading...");
 
             bookRepository.checkOutBook(Util.convertISBNToLong(isbn), Util.convertIDToLong(id), dueDate, checkoutDate);
         } catch(Exception e) {
@@ -84,7 +84,7 @@ public class LibraryManager {
             System.out.print("Please provide an ISBN number: ");
             String input = s.next().trim();
             if(Util.isInvalidISBN(input)) {
-                throw new InvalidISBNException("Error: Invalid ISBN provided");
+                throw new InvalidISBNException();
             }
             isbn = Util.convertISBNToLong(input);
 
@@ -101,11 +101,15 @@ public class LibraryManager {
             condStr = s.next().trim();
             cond = Condition.parseString(condStr);
 
-            System.out.println("Loading...");
+            System.out.print("Please provide a year: ");
+            String yearStr = s.next().trim();
+            int year = Integer.parseInt(yearStr);
 
-            bookRepository.addBook(isbn, name, author, genre, cond);
+            System.out.println("\nLoading...");
 
-            // TODO ADD SUCCESS STATEMENTS
+            bookRepository.addBook(isbn, name, author, genre, cond, year);
+
+            System.out.println("Successfully added book " + name + " to the book repository!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -121,11 +125,19 @@ public class LibraryManager {
             isbn = s.next().trim();
 
             if(Util.isInvalidISBN(isbn)) {
-                throw new InvalidISBNException("Error: Invalid ISBN provided");
+                throw new InvalidISBNException();
             }
 
-            System.out.println("Loading...");
-            bookRepository.removeBook(Util.convertISBNToLong(isbn));
+            long isbnLong = Util.convertISBNToLong(isbn);
+            if(bookRepository.checkDoesNotExist(isbnLong)) {
+                throw new BookDoesNotExistException();
+            }
+            String name = bookRepository.fetch(isbnLong).getName();
+
+            System.out.println("\nLoading...");
+            bookRepository.removeBook(isbnLong);
+
+            System.out.println(name + " has been successfully removed from the book repository!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -141,7 +153,7 @@ public class LibraryManager {
             shelf = s.next().trim();
             int shelfInt = Util.parseShelfString(shelf);
 
-            System.out.println("Loading...");
+            System.out.println("\nLoading...");
 
             bookRepository.printShelf(shelfInt);
         } catch (Exception e) {
@@ -161,7 +173,7 @@ public class LibraryManager {
             sc = s.next().trim();
             int shelfInd = Util.parseShelfString(shelf);
 
-            System.out.println("Loading...");
+            System.out.println("\nLoading...");
 
             bookRepository.sortShelf(shelfInd, sc);
         } catch (Exception e) {
@@ -222,7 +234,7 @@ public class LibraryManager {
             currentDate = Util.parseDateString(s.next().trim());
             long isbnLong = Util.convertISBNToLong(isbn);
 
-            System.out.println("Loading...");
+            System.out.println("\nLoading...");
 
             boolean isLate = returnStack.pushLog(isbnLong, Util.convertIDToLong(id), currentDate, bookRepository);
             Book book = bookRepository.fetch(isbnLong);
@@ -245,7 +257,7 @@ public class LibraryManager {
      */
     private static void handleSeeLastReturn() {
         try {
-            System.out.println("Loading...");
+            System.out.println("\nLoading...");
             long isbn = returnStack.peekLog().getISBN();
             Book book = bookRepository.fetch(isbn);
             System.out.println(book.getName() + " is the next book to be checked in.");
@@ -259,7 +271,7 @@ public class LibraryManager {
      */
     private static void handleCheckInLastReturn() {
         try {
-            System.out.println("Loading...");
+            System.out.println("\nLoading...");
             long isbn = returnStack.popLog(bookRepository).getISBN();
             Book book = bookRepository.fetch(isbn);
             System.out.println(book.getName() + " has been checked in.");

@@ -40,14 +40,14 @@ public class Book {
      * @param bookCondition
      * @param ISBN
      */
-    public Book(String name, String author, String genre, Condition bookCondition, long ISBN) {
+    public Book(String name, String author, String genre, Condition bookCondition, long ISBN, int yearPublished) {
         this.name = name;
         this.author = author;
         this.genre = genre;
         this.bookCondition = bookCondition;
         this.ISBN = ISBN;
+        this.yearPublished = yearPublished;
         checkOutUserID = 0;
-        yearPublished = 0;
         checkOutDate = new Date();
         dueDate = new Date();
         checkedOut = false;
@@ -263,6 +263,8 @@ public class Book {
                 return a.getAuthor().compareTo(b.getAuthor());
             case CONDITION:
                 return Condition.compare(a.getBookCondition(), b.getBookCondition());
+            case YEAR:
+                return Integer.compare(a.getYearPublished(), b.getYearPublished());
         }
         return 0;
     }

@@ -3,7 +3,7 @@
  */
 public class InvalidShelfException extends Exception {
     public InvalidShelfException() {
-        super("Error: Invalid shelf");
+        super("Error: Invalid shelf provided");
     }
 
     public InvalidShelfException(String message) {
