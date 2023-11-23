@@ -1,10 +1,17 @@
 import java.util.Scanner;
 
+/**
+ * The LibraryManager class manages all interaction between the human and the program
+ * Simulates managing a library
+ */
 public class LibraryManager {
     private static BookRepository bookRepository;
     private static ReturnStack returnStack;
     private static Scanner s;
 
+    /**
+     * Prints the menu for human interaction
+     */
     private static void printMenu() {
         System.out.println();
         System.out.println("(B) - Manage Book Repository");
@@ -20,8 +27,8 @@ public class LibraryManager {
         System.out.println("\t\t (Y) - Year");
         System.out.println("\t\t (C) - Condition");
         System.out.println("(R) - Manage Return Stack");
-        System.out.println("\t (R) - Return Book");
-        System.out.println("\t (S) - See Last Return");
+        System.out.println("\t (L) - Return Book");
+        System.out.println("\t (L) - See Last Return");
         System.out.println("\t (C) - Check In Last Return");
         System.out.println("\t (P) - Print Return Stack");
         System.out.println("(Q) - Quit");
@@ -29,9 +36,11 @@ public class LibraryManager {
         System.out.print("Please select what to manage: ");
     }
 
+    /**
+     * Handles checking out action
+     */
     private static void handleCheckoutBook() {
         try {
-            System.out.println("Loading...");
             String id, isbn;
             Date dueDate, checkoutDate;
 
@@ -55,15 +64,19 @@ public class LibraryManager {
             System.out.print("Please provide the checkout date (current date): ");
             checkoutDate = Util.parseDateString(s.next().trim());
 
+            System.out.println("Loading...");
+
             bookRepository.checkOutBook(Util.convertISBNToLong(isbn), Util.convertIDToLong(id), dueDate, checkoutDate);
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Handles adding a new book
+     */
     private static void handleAddNewBook() {
         try {
-            System.out.println("Loading...");
             long isbn;
             String name, author, genre, condStr;
             Condition cond;
@@ -78,7 +91,7 @@ public class LibraryManager {
             System.out.print("Please provide a name: ");
             name = s.next().trim();
 
-            System.out.print("Please provide an author");
+            System.out.print("Please provide an author: ");
             author = s.next().trim();
 
             System.out.print("Please provide a genre: ");
@@ -88,6 +101,8 @@ public class LibraryManager {
             condStr = s.next().trim();
             cond = Condition.parseString(condStr);
 
+            System.out.println("Loading...");
+
             bookRepository.addBook(isbn, name, author, genre, cond);
 
             // TODO ADD SUCCESS STATEMENTS
@@ -96,49 +111,67 @@ public class LibraryManager {
         }
     }
 
+    /**
+     * Handles removing a book
+     */
     private static void handleRemoveBook() {
         try {
-            System.out.println("Loading...");
             String isbn;
             System.out.print("Please provide an ISBN number: ");
             isbn = s.next().trim();
+
             if(Util.isInvalidISBN(isbn)) {
                 throw new InvalidISBNException("Error: Invalid ISBN provided");
             }
+
+            System.out.println("Loading...");
             bookRepository.removeBook(Util.convertISBNToLong(isbn));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Handles printing a shelf in the repository
+     */
     private static void handlePrintRepo() {
         try {
-            System.out.println("Loading...");
             String shelf;
             System.out.print("Please select a shelf: ");
             shelf = s.next().trim();
             int shelfInt = Util.parseShelfString(shelf);
+
+            System.out.println("Loading...");
+
             bookRepository.printShelf(shelfInt);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Handles sorting the shelf
+     */
     private static void handleSortShelf() {
         try {
-            System.out.println("Loading...");
             String shelf, sc;
             System.out.print("Please select a shelf: ");
             shelf = s.next().trim();
             System.out.print("Please select a sorting criteria: ");
             sc = s.next().trim();
             int shelfInd = Util.parseShelfString(shelf);
+
+            System.out.println("Loading...");
+
             bookRepository.sortShelf(shelfInd, sc);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Handles the bookRepository interactions
+     */
     private static void handleBookRepo() {
         System.out.print("Please select an option: ");
         String input = s.next().trim();
@@ -163,9 +196,11 @@ public class LibraryManager {
         }
     }
 
+    /**
+     * Handles returning a book
+     */
     private static void handleReturnBook() {
         try {
-            System.out.println("Loading...");
             String id, isbn;
             Date currentDate;
 
@@ -187,6 +222,8 @@ public class LibraryManager {
             currentDate = Util.parseDateString(s.next().trim());
             long isbnLong = Util.convertISBNToLong(isbn);
 
+            System.out.println("Loading...");
+
             boolean isLate = returnStack.pushLog(isbnLong, Util.convertIDToLong(id), currentDate, bookRepository);
             Book book = bookRepository.fetch(isbnLong);
 
@@ -203,6 +240,9 @@ public class LibraryManager {
         }
     }
 
+    /**
+     * Handles checking the last returned book
+     */
     private static void handleSeeLastReturn() {
         try {
             System.out.println("Loading...");
@@ -214,6 +254,9 @@ public class LibraryManager {
         }
     }
 
+    /**
+     * Handles checking in the last returned book
+     */
     private static void handleCheckInLastReturn() {
         try {
             System.out.println("Loading...");
@@ -225,6 +268,9 @@ public class LibraryManager {
         }
     }
 
+    /**
+     * Handles the return stack interaction
+     */
     private static void handleReturnStack() {
         System.out.print("Please select an option: ");
         String input = s.next().trim();
@@ -240,11 +286,16 @@ public class LibraryManager {
                 break;
             case "P":
                 System.out.print(returnStack.toString());
+                break;
             default:
                 System.out.println("The input you entered is incorrect. Please try again!");
         }
     }
 
+    /**
+     * Runs the menu interaction between human and program until Q is entered
+     * @return Whether or not Q was entered (should program continue or not?)
+     */
     private static boolean runMenu() {
         printMenu();
         String input = s.next().trim();

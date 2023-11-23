@@ -1,6 +1,9 @@
+/**
+ * Exception clas that is thrown if the return date is earlier than the checkout date
+ */
 public class InvalidReturnDateException extends Exception {
     public InvalidReturnDateException() {
-        super();
+        super("Error: Invalid return date");
     }
 
     public InvalidReturnDateException(String message) {
