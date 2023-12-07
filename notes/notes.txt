@@ -1,0 +1,520 @@
+Stacks (Lecture 3.1)
+------
+- Imagine a stack of plates, can only add to the top or remove from top
+- Array implementation: Using back as the "top" is more efficient (O(1)) vs. front of array (O(N))
+
+Applications
+    - OS: Keep track of method calls in program
+    - Compilers: Converstion of arithmetic expression to machine code
+
+OPERATIONS:
+    - Constructor - create empty stack
+    - isEmpty - is the stack empty?
+    - push - push an element on top of stack (if stack is not full)
+    - pop - remove top element from stack (if stack is not empty)
+    - peek - examine top element of stack without removing it (if stack is not empty)
+
+Balanced Paranthesis:
+    - Balanced if # left paren of each type = # right paren of each type
+    - Each right and left match correctly
+
+    Algorithm:
+        iterate left -> right
+
+        if char is left paren:
+            push to stack
+
+        else if right paren:
+            if stack empty: return false
+            else if type(stack.peek()) == type(char):
+                stack.pop()
+            else:
+                return false
+
+        after iterating, if (stack not empty), return false
+    end of algorithm
+
+
+
+
+Stacks Pt 2 (Lecture 3.2)
+-----------------------------
+
+Eval Expression (Fully Balanced) (Infix)
+    NumStack, OpStack
+    for(token : string)
+        if token == num: numstack.push(token)
+        if token == op: opstack.push(token)
+        if token == '(' ignore
+        if token == ')':
+            num2 = numstack.pop()
+            num1 = numstack.pop()
+            op = opstack.pop()
+            result = num1 op num2
+
+Eval Expression (PostFix)
+    NumStack
+    for(token : string)
+        if token == num: numstack.push(token)
+        else:
+            num2 = numstack.pop()
+            num1 = numstack.pop()
+            int res = num1 (token) num2
+            numstack.push(res)
+
+    answer = numstack.top()
+    end of algorithm
+
+
+Convert Infix -> Postfix
+Precedence function:
+'(' -> 1
+'+ or -' -> 2
+'* or /' -> 3
+
+
+OpStack
+String result
+for(token : string)
+    if Character.isDigit(token):
+        result += token
+    else if token == '(':
+        op.push(token)
+    else if token == ')':
+        while(op.top() != '('):
+            result += op.top()
+            op.pop()
+        op.pop()
+    else:
+        while(!op.isEmpty() && prec(op.top()) >= prec(token)):
+            ans += op.top()
+            op.pop()
+        op.push(token)
+
+while(!op.isEmpty()):
+    result += op.top()
+    op.pop()
+
+
+
+Queues 1 (Lecture 4.1)
+---------------------
+- Imagine a line of people
+
+Applications
+    - OS: Print queue, process scheduling, input buffer
+    - Modeling and simulating of computer and phone networks, road systems
+    - Jai Alai
+
+
+OPERATIONS
+    - Constructor - create an empty queue
+    - isEmpty - is the queue empty?
+    - dequeue - remove the front element from queue
+    - enqueue - add an element to the queue
+
+- Best way is "circular"
+
+
+Queues 2 (Lecture 4.2)
+----------------------
+- Math.random() -> random double in range [0.0, 1.0)
+- Boolean source
+
+- Lets say we call occurs() N times
+- Return true 0.35 * N times, false (1 - 0.35) * N times
+
+public boolean occurs(double prob) {
+    return (Math.random() < prob);
+}
+
+- Return occurs(0.35)
+
+Car wash simulation
+    def carWash(int wash, double prob, int time):
+        if(params are bad):
+            throw exception
+        
+        IntQueue cars = new IntQueue();
+        BooleanSource arrival = new BooleanSource(prob)
+        int totalTime
+        double averageTime
+        int numCars
+        int currentSecond
+        int timeLeft
+
+        for(currentSecond = 1; currentSecond <= time; currentSecond++) {
+            if(arrival.occurs()) {
+                cars.enqueue(currentSecond)
+            } else if(timeLeft == 0 && !cars.empty) {
+                timeLeft = wash
+                totalTime = currentSecond - cars.dequeue()
+                numCars++
+            }
+            if(timeLeft > 0) {
+                timeLeft--
+            }
+        }
+
+        averageTime = (double) totalTime / (double) numCars
+        return averageTime
+
+
+Recursion (Lecture 5.1)
+-----------------------
+
+Activation RecordsA
+    - When a method calls another method, activation record is stored on system stack
+    - Contains:
+        - Where to return
+        - Parameters passed
+        - Value of local variables
+            - X, N, location
+    - In summary:
+        - Temp storage for variables
+        - Hold return location
+
+Tail recursion
+    - The recursive statement is the VERY last statement
+    - Every tail recursive method can be rewritten as a for loop
+    - Cannot contain any other expressions inside that statement:
+    e.g.
+    def fac(int n):
+        if(n == 1) return 1
+        return n * fac(n - 1)
+
+    NOT TAIL RECURSIVE
+
+    def tailfac(int n, int x):
+        if(n == 1) return x
+        return tailfac(n - 1, x * n)
+
+    THIS IS TAIL RECURSIVE
+
+Dynamic programming
+    - Reduces recursive calls by saving return values
+
+    Fibonacci
+        int dp[n]
+        int fib(int n):
+            if(n <= 1) return n
+            if(dp[n - 1] == -1) dp[n - 1] = fib(n - 1)
+            if(dp[n - 2] == -1) dp[n - 2] = fib(n - 2)
+            return dp[n - 1] + dp[n - 2]
+
+
+Backtracking
+- Exhaustive search of all solutions from partial solutions
+- If any step leads to invalid solution, we "backtrak" to last partial solution
+    findPath(x, y)
+        if Maze[x][y] = T:
+            output (x, y)
+            return True
+        else if Maze[x][y] = X:
+            return false
+        else:
+            Maze[x][y] = X
+            if findPath(x - 1, y) || findPath(x + 1, y) 
+                || findPath(x, y - 1) || findPath(x, y + 1):
+                output (x, y)
+                return true
+            else:
+                return false
+
+
+
+
+Binary Trees 1 (Lecture 6.1)
+--------------------------
+Terminology:
+    - Formal definition:
+        - A binary tree is either empty, or a node
+            where left and right subtrees are binary trees
+
+    - Given X, Y
+    - X is an ancestor of Y if X is the parent of Y,
+        or X is an ancestor of the parent of Y
+
+    - X is a descendent of Y if X is a child of Y,
+        or X is a descendent of a child of Y
+
+    - Depth(Root) = 0
+
+    - Full Binary Tree
+        - All leaves same depth
+        - Every non-leaf has 2 children
+
+    - Complete Binary Tree
+        - Every level has maximum nodes (besides lowest level)
+        - Lowest level has all nodes left-most aligned
+    
+- If a full tree has n leaves, it has 2n-1 nodes
+- If a tree has height h, it has max 2^(h + 1) - 1 nodes
+    
+Traversals
+    - Preorder
+        public void preorder() {
+            System.out.println(data);
+            if(left != null) left.preorder();
+            if(right != null) right.preorder();
+        }
+    
+    - Inorder
+        public void inorder() {
+            if(left != null) left.inorder();
+            System.out.println(data);
+            if(right != null) right.inorder();
+        }
+
+    - Postorder
+        public void postorder() {
+            if(left != null) left.postorder();
+            if(right != null) right.postorder();
+            System.out.println(data);
+        }
+
+
+Binary Trees 2 (Lecture 6.2)
+----------------------------
+Binary Search Trees
+    - All nodes in left subtree are < root
+    - All nodes in right subtree are > root
+    - Insertion psuedocode
+        def insert(int x):
+            BTNode newNode = BTNode(x)
+            BTNode cursor
+            boolean done = false
+            if(root == null):
+                newNode = new BTNode(x)
+                root = newNode
+            else:
+                cursor = root
+                while(!done):
+                    if(x < cursor.val):
+                        if(cursor.left == null)
+                            cursor.left = newNode
+                            done = true
+                        else:
+                            cursor = cursor.left
+                    else if(x > cursor.val)
+                        if(cursor.right == null)
+                            cursor.right = newNode
+                            done = true
+                        else:
+                            cursor = cursor.right
+                    else:
+                        done = true     // that means NOT UNIQUE!!!!!!!
+
+    - Time complexity:
+        Full binary tree: O(logn)
+        Worst case: O(n)
+
+    - Removing psuedocode
+        - 4 cases:
+            - 1. Item not in tree
+                return false
+
+            - 2. Item is root, has no left child
+                - Set root as right child
+
+            - 3. Item is non-root, no left child
+                - a) item == parent.left
+                    - parent.left = item.right
+                
+                - b) item == parent.right
+                    - parent.right = item.right
+
+            - 4. Item has a left child
+                - Find maximum value in item.left subtree
+                    - This is called "rightmost node"
+                - item.data = item.left.rightMostData()
+                - item.left = item.left.removeRightMost()
+
+
+
+Balanced Trees 1 (Lecture 7.1)
+------------------------------
+
+Heap
+    - Binary tree such that
+        - data in each node is greater than data in node's children
+        - tree is complete
+
+    - Storage
+        - Array
+        - root: index 0
+        - node in index i:
+            - left child: 2i + 1
+            - right child: 2i + 2
+            - parent: (i - 1) / 2
+
+    - OPERATIONS
+        - Constructor - Create empty heap
+        - Insert
+        - Remove MAXIMUM data element
+
+    - Insert Algorithm
+        - Place element in first empty position
+        - Compare element with parent
+            - If element > parent, swap(element, parent)
+        - Repeat until element < parent or pos(element) == root
+
+    - Remove Algorithm
+        - Place root in temp variable
+        - Move last element to root
+        - While last element < children
+            - swap(last element, max(children))
+        - Return temp
+
+    - Time Complexity
+        - Assume Heap has N nodes
+        - log(N) levels
+        - INSERT: log(N)
+        - REMOVE: log(N)
+
+Priority Queue
+    - Ordinary queue, but only remove maximum element
+
+    - Array for PQ
+        - Enqueue: O(1)
+        - Dequeue: O(n)
+
+    - Sorted Array for PQ
+        - Enqueue: O(n)
+        - Dequeue: O(1)
+
+    - Heap
+        - Enqueue and Dequeue: O(logn)
+
+
+
+Balanced Trees 2 (Lecture 7.2)
+------------------------------
+- B-Tree
+    - Balanced multi-way search tree
+    - Node can hold multiple items
+    - Node can have multiple children
+
+    - Applications
+        - Reduce disk IO operations
+        - Used by database systems
+        - Secondary storage
+
+    Rules
+        - min(root.elements) = 1
+        - Designate root.elements as MINIMUM
+        - Every other node has at least MINIMUM elements
+        - Maximum number = 2 * MINIMUM elements
+        - given a node (non-leaf)
+            - # subtrees = node.elements + 1
+            - item[i]
+                - greater than all elements in subtree[i]
+                - less than all elements in subtree[i + 1]
+        - every leaf has same depth
+
+    - Elements are in increasing order in each node
+    - Let's say a node has K elements
+    - The 0th child will have all items < node[0]
+    - The 1st child will have all items > node[1] && items < node[2]
+    - etc etc
+
+
+    Searching
+        - searching for "item"
+        - k: number of items in node
+        - i: first index such that data[i] >= item
+            - if all data[i] < item, i = k
+        - if data[i] == item: return true
+        - else search on subtree[i]
+
+
+
+NEED TO DO OTHER TREE SHIT HERE 
+-------------------------------
+
+
+
+
+
+Sorting 1 (Lecture 8.1)
+---------------------
+- Selection Sort
+    - Scan left to right. Assume subarray A[0 .. i] is the FINAL sorted result, 
+        find the minimum element among A[i + 1 .. n - 1]. then swap(A[i + 1], A[min])
+    - Example
+        - 6 4 9 5 _1 8 2 7 3
+        - 1 4 9 5 6 8 _2 7 3
+        - 1 2 9 5 6 8 4 7 _3
+        - 1 2 3 5 6 8 _4 7 9
+        - 1 2 3 4 6 8 _5 7 9
+        - 1 2 3 4 5 8 _6 7 9
+        - 1 2 3 4 5 6 8 _7 9
+        - 1 2 3 4 5 6 7 _8 9
+        - 1 2 3 4 5 6 7 8 _9
+    - Loop Invariant: Array is sorted for first i elements
+    - In-place
+    - Time Complexity: 
+        - Worst: O(n^2)
+            - (n - 1) * n / 2 comparisons = n^2
+        - Best: O(n^2)
+
+- Insertion Sort
+    - Scan left to right. Assume subarray A[0 .. i] is sorted,
+        "insert" element A[i + 1] into sorted subarray A[0 .. i]
+    - In-place
+    - Example 
+        - _6 4 1 3 2 5
+        - _4 6 1 3 2 5
+        - _1 4 6 3 2 5
+        - 1 _3 4 6 2 5
+        - 1 _2 3 4 6 5
+        - 1 2 3 4 _5 6
+    - Loop Invariant: Subarray A[0 to i - 1] is sorted
+    - Time Complexity:
+        - Worst: O(n^2) (when the array is decreasing)
+        - Average O(n^2)
+        - Best O(n) (if the array is already sorted)
+
+- Bubble Sort
+    - Assume subarray A[0 .. i] is sorted. Iterate from j = n - 1 -> j = i + 1,
+        swap(A[j], A[j - 1]) if A[j - 1] > A[j]
+    - In-place
+    - Example
+        - 6 4 1 3 2 5
+    - Time Complexity:
+        - Worst: O(n^2)
+        - Special Cases:
+
+Sorting 2 (Lecture 8.2)
+---------------------
+- Merge Sort
+    - Recursively split array into partitions that are half the parent partition size
+    - Sort these split partitions, then merge them
+    - NOT in place
+    - Time Complexity
+        - Everything: O(nlogn)
+
+- Quick Sort
+    - Choose an arbitrary pivot, such as first index in partition. Init two pointers, 
+        lo and hi that start at either ends of partition. Increment lo until A[lo] > pivot.
+        Decrement hi until A[hi] < pivot. Then swap(A[lo], A[hi]). Continue until lo meets hi.
+        Then swap(A[pivot], A[end of first partition])
+
+- Heap Sort
+    - Make a Heap efficiently, then remove all elements iterate across A from n - 1 => 0
+        - Efficient make heap: https://stackoverflow.com/questions/49774237/prove-that-binary-heap-build-max-comparsion-is-2n-2
+    - Time Complexity
+        - Everything: O(nlogn)
+
+- Counting Sort
+    - Given array of n elements with integers in range [0, k - 1]. Count frequency of each element.
+        Then let start[] be a prefix sum that defines start position of each integer in new array.
+        For each A[i], let pos = start[A[i]]. result[pos] = A[i], and start[A[i]]++
+    - NOT in place
+    - Time Complexity:
+        - Everything: O(n + k)
+
+
+Searching 1 (Lecture 9.1)
+
+Searching 2 (Lecture 9.2)
