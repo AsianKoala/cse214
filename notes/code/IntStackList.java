@@ -11,7 +11,7 @@ public class IntStackList {
 
     public void push(int item) {
         IntNode newNode = new IntNode(item);
-        newNode.setNext(top);
+        newNode.setLink(top);
         top = newNode;
     }
 

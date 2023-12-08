@@ -25,7 +25,7 @@ public class IntNode {
         this.val = val;
     }
 
-    public void setNext(IntNode next) {
+    public void setLink(IntNode next) {
         this.next = next;
     }
 }

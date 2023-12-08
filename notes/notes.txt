@@ -1,3 +1,51 @@
+Efficiency and Time Complexity (Lecture 1.1)
+--------------------------------------------
+- Phases of Software Development
+    - Specification, Design, Impl, Analysis, Test, Doc
+- Conditions
+    - Invariant: Condition holds true before and after a loop (not necessarily during loop)
+    - Precondition: Condition holds true before method
+    - Postcondition: Condition holds true after method
+- Specification of Method
+    - Summary, Parameter Description, Precondition, Post-Condition / Return, Exception
+    - Example
+        - Summary: Area of a circle
+        - Parameter Description: public static double area(double radius)
+        - Precondition: radius > 0
+        - Returns: Returns area of circle with given radius
+        - Throws: IllegalRadius, Indicates radius is non positive
+
+
+ADT (Lecture 1.2)
+----------------
+- Data Structure: Collection of data
+    - Ex: Array
+- Algorithm: Procedure of instructions for solving a problem in English, code, psuedocode
+- ADT
+    - Mathematical specification of a data structure
+        - Type of data, operations on data, param on operations
+    - What but not how
+- Method Types
+    - Accesssor (getX, getY)
+    - Modification/Mutator (rotate90, shift)
+    - Static (distance, midpoint)
+    - Support (constructor, clone, equals, toString)
+
+Bag ADT (Lecture 1.3)
+---------------------
+- Bag
+    - It's just an array
+    - Collection of items with same time
+    - Invariants
+        - Elements are stored in data[0 .. manyItems - 1]
+        - manyItems <= data.length
+- ArrayCopy
+    - System.arrayCopy(src, srcPos, dest, destPos, numElems);
+
+Linked List (Lecture 2.1)
+-------------------------
+
+
 Stacks (Lecture 3.1)
 ------
 - Imagine a stack of plates, can only add to the top or remove from top
@@ -8,11 +56,14 @@ Applications
     - Compilers: Converstion of arithmetic expression to machine code
 
 OPERATIONS:
-    - Constructor - create empty stack
-    - isEmpty - is the stack empty?
-    - push - push an element on top of stack (if stack is not full)
-    - pop - remove top element from stack (if stack is not empty)
-    - peek - examine top element of stack without removing it (if stack is not empty)
+    - BASIC:
+        - Constructor - create empty stack
+        - isEmpty - is the stack empty?
+        - push - push an element on top of stack (if stack is not full)
+        - pop - remove top element from stack (if stack is not empty)
+    - EXTENDED:
+        - peek - examine top element of stack without removing it (if stack is not empty)
+        - size: get size
 
 Balanced Paranthesis:
     - Balanced if # left paren of each type = # right paren of each type

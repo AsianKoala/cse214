@@ -1,0 +1,78 @@
+Location
+    - Constructor
+        - public Location(double xInitial, yInitial). Construct location with specific coordinates
+        - Parameters: xInitial - initial x coordinate. yInitial - initial y coordinate.
+        - Postcondition: Location has been initialized at given coordinates
+    - clone
+        - public Object clone(). Generate copy of this Location
+        - Returns: Copy of this Location
+        - Special Note: Typecasted to Location before used
+    - distance
+        - public static double distance(Location p1, Location p2). Compute distance between two Locations
+        - Parameters : p1 - first location. p2 - second location
+        - Returns: distance between p1 and p2
+        - Special Note: Returns NaN if either are null
+    - equals
+        - public boolean equals(Object obj). Compare this Location to another for equality
+        - Parameters: obj - Object to be compared with
+        - Returns: True if obj is same location as this Location
+        - Special Note: false if obj null or not Location
+    - getX/Y
+        - public boolean getX(). Get x/y coordinate of this Location
+        - Returns: x/y coordinate
+    - midpoint  
+        - public static Location midpoint (Location p1, Location p2). Generates and returns midpoint of p1, p2
+        - Parameters: p1 - first Location, p2 - second Location
+        - Returns: Location halfway between p1 and p2
+        - Special Note: Returns null if p1 | p2 null
+    - rotate90
+        - public void rotate90(). Rotate Location 90 degrees
+        - Postcondition: Location rotated 90 degrees
+    - shift
+        - public void shift(double x, double y). Move along x and y axis
+        - Postcondition: Shifted
+    - toString()
+        - public String toString(). Generate string repr of Loc
+        - Returns: Return String repr of loc
+
+IntArrayBag
+    
+
+
+Stack
+    - Constructor - create empty stack
+    - isEmpty - is the stack empty?
+    - push - push an element on top of stack (if stack is not full)
+    - pop - remove top element from stack (if stack is not empty)
+    - peek - examine top element of stack without removing it (if stack is not empty)
+
+
+Queue
+    - Constructor
+    - isEmpty
+    - dequeue
+    - enqueue
+
+BTNode
+    - Constructor
+    - get/set for data, left, right
+    - traversals
+    - getRightMostData
+    - removeRightMost
+
+BinarySearchTree
+    - Constructor
+    - isEmpty
+    - inorder
+    - insert
+    - remove
+    - getRightMostData
+    - removeRightMostData
+
+Heap
+    - Constructor
+    - isEmpty
+    - isFull
+    - insert
+    - remove
+    - fixHeap

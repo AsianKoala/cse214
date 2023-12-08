@@ -1,0 +1,8 @@
+IntArrayBag
+- Add (no capacity increase): O(1)
+- Add (capacity increase): O(n)
+- Remove: O(n)
+
+
+Name           Worst    Best
+Selection       n^2     n^2

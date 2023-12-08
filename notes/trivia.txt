@@ -1,0 +1,18 @@
+
+Stack
+    - OS: Keep track of method calls in program (Activation Records)
+    - Compilers: Converstion of arithmetic expression to machine code
+
+Queue
+    - OS: Print queue, process scheduling, input buffer
+    - Modeling and simulating of computer and phone networks, road systems
+    - Jai Alai
+
+Binary Trees:
+    - Encryption, databases, expert systems
+
+B-Tree
+    - Designed to work on magnetic disks and secondary storage devices
+    - Minimize disk IO operations 
+
+
