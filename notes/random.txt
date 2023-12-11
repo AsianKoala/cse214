@@ -1,0 +1,234 @@
+Location
+
+public Location clone() {
+    Location ans;
+    try {
+        ans = (Location) super.clone();
+    } catch(CloneNotSupportedException e) {
+
+    }
+    return ans;
+}
+
+public boolean equals(Object b) {
+    if(b != null && b instanceOf Location) {
+        Location obj = (Location) b;
+        return obj.x == x && obj.y == y;
+    } else {
+        return false;
+    }
+}
+
+IntArrayBag
+
+public void ensureCapacity(int minCap) {
+    if(minCap <= 0) throw something
+    if(data.length < minCap) {
+        int[] bigger = new int[minCap];
+        System.arrayCopy(data, 0, bigger, 0, manyItems);
+        data = bigger;
+    }
+}
+
+public void addAll(IntArrayBag b) {
+    if(b == null) return;
+    ensureCapacity(manyItems + b.manyItems);
+    System.arrayCopy(b.data, 0, data, manyItems, b.manyItems);
+}
+
+public static IntArrayBag union(IntArrayBag a, IntArrayBag b) {
+    IntArrayBag ans = new IntArrayBag(a.manyItems + b.manyItems);
+    System.arrayCopy(a.data, 0, ans.data, 0, a.manyItems);
+    System.arrayCopy(b.data, 0, ans.data, a.manyItems, b.manyItems);
+    return ans;
+}
+
+public boolean remove(int target) {
+    int i = 0;
+    while(i < manyItems && data[i] != target) {
+        target++;
+    }
+    if(target == manyItems) return false;
+    manyItems--;
+    data[i] = data[manyItems];
+}
+
+public void countOccurances(int target) {
+    int ans = 0;
+    for(int i = 0; i < manyItems; i++) {
+        if(data[i] == target) {
+            ans++;
+        }
+    }
+    return ans;
+}
+
+public void trimToSize() {
+    int[] trimmed = new int[manyItems];
+    System.arrayCopy(data, 0, trimmed, 0, manyItems);
+    data = trimmed;
+}
+
+IntList
+IntNode head, tail, cursor;
+
+public void addHead(int x) {
+    IntNode newNode = new IntNode(x);
+    if(head == null) {
+        head = newNode;
+        tail = newNode;
+        cursor = newNode;
+    } else {
+        newNode.setLink(head);
+        head = newNode;
+    }
+}
+
+public void removeHead() {
+    if(head != null) {
+        head = head.getLink();
+    }
+    if(head == null) {
+        tail = null;
+    }
+    cursor = head;
+}
+
+public void addIntAfter(int x) {
+    IntNode newNode = new IntNode(x);
+    if(cursor == null) {
+        head = newNode;
+        tail = newNode;
+        cursor = newNode;
+    } else {
+        newNode.setLink(cursor.getLink());
+        cursor.setLink(newNode);
+        cursor = newNode;
+        if(cursor.getLink() == null) {
+            tail = cursor;
+        }
+    }
+}
+
+public void removeIntAfter() {
+    if(cursor != tail) {
+        cursor.setLink(cursor.getLink().getLink());
+        if(cursor.getLink() == null) {
+            tail = cursor;
+        }
+    }
+}
+
+public boolean advanceCursor() {
+    if(cursor != tail) {
+        cursor = cursor.getLink();
+    }
+    return false;
+}
+
+public void resetCursor() {
+    cursor = head;
+}
+
+public boolean isEmpty() {
+    return cursor == null;
+}
+
+public int listLength() {
+    IntNode ptr = head;
+    int cnt = 0;
+    while(ptr != null) {
+        cnt++;
+        ptr = ptr.getLink();
+    }
+    return cnt;
+}
+
+public boolean listSearch(int x) {
+    IntNode ptr = head;
+    while(ptr != null && ptr.getData() != target) {
+        ptr = ptr.getLink();
+    }
+    if(ptr == null) return false;
+    cursor = ptr;
+    return true;
+}
+
+public boolean listPosition(int pos) {
+    if(pos <= 0) throw
+    int i = 1;
+    IntNode ptr = head;
+    while(ptr != null && i < pos) {
+        ptr = ptr.getLink();
+    }
+    if(ptr == null) return false;
+    cursor = ptr;
+    return true;
+}
+
+public IntList listCopy() {
+    IntList ans;
+    IntNode ptr = head;
+    while(ptr != null) {
+        ans.addIntAfter(ptr.getData());
+        ptr = ptr.getLink();
+    }
+    return ans;
+}
+
+public boolean remove(int x) {
+    IntNode ptr = head;
+    IntNode prev = null;
+    while(ptr != null && ptr.getData() != target) {
+        prev = ptr;
+        ptr = ptr.getLink();
+    }
+    if(ptr == null) {
+        return false;
+    } else if(ptr == head) {
+        removeHead();
+        return true;
+    } else {
+        prev.setLink(ptr.getLink());
+        if(prev.getLink() == null) {
+            tail = prev;
+        }
+        return true;
+    }
+}
+
+
+IntStackArray
+int CAPACITY = 100;
+int[] data;
+int top = -1;
+
+public IntStackArray() {
+    data = new int data[CAPACITY];
+}
+
+public void push(int x) {
+    if(top == CAPACITY - 1) throw
+    top++;
+    data[top] = x;
+}
+
+public void isEmpty() {
+    return top == -1;
+}
+
+public int peek() {
+    if(top == -1) throw
+    return data[top];
+}
+
+public int pop() {
+    if(top == -1) throw;
+    int ans = data[top];
+    top--;
+    return ans;
+}
+
+public int size() {
+    return top + 1;
+}

@@ -36,8 +36,34 @@ Location
         - Returns: Return String repr of loc
 
 IntArrayBag
-    
+    - Constructor (default capacity)
+    - Constructor (parameter capacity)
+    - getCapacity
+    - size
+    - ensureCapacity(minimumCapacity): arrayCopy to an array with minimumCapacity
+    - add(int x)
+    - addAll(IntArrayBag addend)
+    - union(IntArrayBag b1, IntArrayBag b2)
+    - countOccurances(int target)
+    - remove(int target)
+    - trimToSize
 
+IntList
+    - constructor
+    - addNewHead 
+    - addIntAfter 
+    - removeIntAfter
+    - removeHead
+    - advanceCursor
+    - resetCursor
+    - isEmpty
+    - listLength (NC)
+    - listSearch
+    - listPosition
+    - listCopy (NC)
+    - remove (NC)
+    - getNodeData
+    - setNodeData
 
 Stack
     - Constructor - create empty stack

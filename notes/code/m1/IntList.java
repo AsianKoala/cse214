@@ -80,14 +80,11 @@ public class IntList {
 
     public boolean listSearch(int target) {
         IntNode ptr = head;
-        while(ptr != null) {
-            if(ptr.getData() == target) {
-                cursor = ptr;
-                return true;
-            }
+        while(ptr != null && ptr.getData() != target) {
             ptr = ptr.getLink();
         }
-        return false;
+        if(ptr != null) cursor = ptr;
+        return ptr != null;
     }
 
     public boolean listPosition(int pos) {
@@ -102,6 +99,16 @@ public class IntList {
         }
         if(ptr != null) cursor = ptr;
         return ptr != null;
+    }
+
+    public static IntList listCopy(IntList source) {
+        IntList newList = new IntList();
+        IntNode ptr = source.head;
+        while(ptr != null) {
+            newList.addIntAfter(ptr.getData());
+            ptr = ptr.getLink();
+        }
+        return newList;
     }
 
     public boolean remove(int target) {

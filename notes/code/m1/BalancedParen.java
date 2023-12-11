@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class Lec31BalancedParen {
+public class BalancedParen {
     public static void main(String[] args) {
         String s = "({A+B}-[C/D])";
         Stack<Character> stack = new Stack<Character>();

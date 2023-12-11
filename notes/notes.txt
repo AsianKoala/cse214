@@ -44,10 +44,11 @@ Bag ADT (Lecture 1.3)
 
 Linked List (Lecture 2.1)
 -------------------------
+- Linked Lists are mainly just memorization
 
 
 Stacks (Lecture 3.1)
-------
+--------------------
 - Imagine a stack of plates, can only add to the top or remove from top
 - Array implementation: Using back as the "top" is more efficient (O(1)) vs. front of array (O(N))
 
@@ -451,11 +452,10 @@ Balanced Trees 2 (Lecture 7.2)
         - Used by database systems
         - Secondary storage
 
-    Rules
+    - Rules
         - min(root.elements) = 1
-        - Designate root.elements as MINIMUM
-        - Every other node has at least MINIMUM elements
-        - Maximum number = 2 * MINIMUM elements
+        - min(other_node.elements) = MINIMUM
+        - max(other_node.elements) = 2 * MINIMUM elements
         - given a node (non-leaf)
             - # subtrees = node.elements + 1
             - item[i]
@@ -467,8 +467,12 @@ Balanced Trees 2 (Lecture 7.2)
     - Let's say a node has K elements
     - The 0th child will have all items < node[0]
     - The 1st child will have all items > node[1] && items < node[2]
-    - etc etc
 
+    - Insertion
+        - First insert element into proper node
+        - If node now breaks B-Tree rules, select the element[size / 2] (median), and push it up
+        - Recursively apply this step
+        - Fix tree if needed
 
     Searching
         - searching for "item"
@@ -478,13 +482,87 @@ Balanced Trees 2 (Lecture 7.2)
         - if data[i] == item: return true
         - else search on subtree[i]
 
+- 2-3-4 Tree
+    - B tree BUT eliminate size requirements
+    - Each node can have 2, 3, 4 elements
+    - All leaves are at same depth
+    - Adding example
+        30 50 70
+        10 15 20 | 40 | 60 | 80 90 
 
+        Add 100
 
-NEED TO DO OTHER TREE SHIT HERE 
--------------------------------
+        30 50 70
+        10 15 20 | 40 | 60 | 80 90 100
 
+        Add 25
 
+        30 50
+        20 | 40 | 70
+        10 15 | 25 | 60 | 80 90 100
 
+    - Same insertion rules as B-Tree
+
+- Red-Black Trees
+    - Definition
+        - Every node is red or black
+        - Root is black
+        - If node is red, children must be black
+        - Every path from node to null link must have same # black nodes
+        - Maximum height of logn
+    - Rotations
+        - Decrease height of tree
+        - Large subtrees up, small subtrees down
+        - Left-rotate code
+            def rotateLeft(node):
+                x = node.right
+                y = x.left
+                x.left = node
+                node.right = y
+                node.p = x
+                if y != null: y.p = node
+        - Right-rotate code
+            def rotateRight(node):
+                x = node.left
+                y = x.right
+                x.right = node
+                node.left = y
+                node.p = x
+                if y != null: y.p = node
+    - Insertion of node Z
+        - Color Red and recolor/rotate nodes to fix
+        - 4 Scenarios
+            - Z = root
+                - Color black
+            - Z.uncle = red
+                - Recolor parent, grandparent, uncle
+            - Z.uncle = black (triangle)
+                - Z is left child, parent is right child (vice versa too)
+                - swap(Z, Z.parent) and make place parent on appropriate side of Z
+                    (following BST)
+            - Z.uncle = black (line)
+                - Rotate Z.grandparent in opposite direction of Z
+                - Basically, swap(Z.parent, Z.grandparent). Put Z on appropriate side of Z.parent
+    - Just know properties + converting 2-3-4 -> Red-Black
+
+- AVL Tree
+    - Balanced BST
+    - Invented by Adelson, Velski, Landis
+    - Balanced: Height of subtrees differ by no more than 1
+    - Depth with n nodes: O(logn)
+    - Time Complexity:
+        Search, insert, delete: O(logn)
+    - Just know how to convert BST -> AVL
+    
+- Comparisons
+    - Maximum number of nodes @ level n
+        - Binary: 2^n
+        - 2-3-4: 4^n
+        - B-tree: (min + 1)^n
+    - Maximum number of elements @ level n
+        - Binary: 2^n
+        - 2-3-4: 3 * 4^n
+        - B-tree: 2 * min * (min + 1)^n
 
 
 Sorting 1 (Lecture 8.1)
@@ -535,6 +613,7 @@ Sorting 1 (Lecture 8.1)
     - Time Complexity:
         - Worst: O(n^2)
         - Special Cases:
+        
 
 Sorting 2 (Lecture 8.2)
 ---------------------
@@ -567,5 +646,74 @@ Sorting 2 (Lecture 8.2)
 
 
 Searching 1 (Lecture 9.1)
+-------------------------
+- Tables/Dict
+    - ADT where items are stored according to a key
+    - items are called records
+    - Records can have multiple fields
+    - Desired key value = target
+    - Impl using array, heap, tree
 
-Searching 2 (Lecture 9.2)
+- Sequential Search
+    - On array, self explanatory
+    - On table
+        public static int search(someClass[] a, int target) {
+            int i = 0;
+            bool found = false;
+            while((i < a.length) && !found) {
+                if(a[i].getKey() == target) found = true;
+                else i++;
+            }
+            if(found) return i;
+            else return -1;
+        }
+
+- Binary Search
+    - Precondition: sorted
+    - Postcondition: pos of target
+    - Psuedocode
+        search(a, first, size, target):
+            if size <= 0: return -1
+            mid = first + size / 2
+            if target == a[mid]: return mid
+            else if target < a[mid]: return search(a, first, size / 2, target)
+            else: return search(a, mid + 1, (size - 1) / 2, target)
+
+- Hashing
+    - Hash function maps key -> pos
+    - If hash(k1) = hash(k2), collision has occured
+    - Goals
+        - Search, insert (no collision) is O(1)
+    - Hash Function
+        - k % tablesize (if integer)
+        - k.hashCode() % tablesize (if Object)
+        - Tablesize should be prime
+            - Proof
+                Let p = tablesize of hashtable
+                Let x be any prime < p s.t. x | p
+                For all k s.t. xk < p, xk + pi will make to xk in hashtable
+                However, if p is prime, there exists no x < p,
+                and the only pattern will be kp (mapping to 0)
+    - Collision Resolution
+        - Given hash(k) = p
+        - Linear Probing
+            - If table[p] contains diff, key, examine p+1, p+2 ... until empty
+            - H(k, i) = (h'(k) + c * i) mod tableSize
+        - Quadratic Probing
+            If table[p] contains diff, key, examine p+1, p+4, p+9 ... until empty
+            - H(k, i) = (h'(k) + c1 * i + c1 * i^2) mod tableSize
+    - Removing from Hashtable
+        - May cause problems with probing
+        - Add a boolean array to check if position has been used previously
+        - During probing, if table[p] empty and used[p], continue search
+    - Load Factor
+        - Load factor (\alpha) = num_elements / tableSize
+        - For linear probing, as \alpha approaches 1, # collisions increase
+
+
+
+
+
+
+Recitation Notes
+----------------

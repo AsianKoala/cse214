@@ -16,3 +16,8 @@ B-Tree
     - Minimize disk IO operations 
 
 
+2-3-4 vs. B-Tree
+    - More data values: less searches since shorter tree, 
+        but more comparisons to determine which subtree examine
+    - 2-3-4 good for trees in main memory
+    - B-Tree good for external memory

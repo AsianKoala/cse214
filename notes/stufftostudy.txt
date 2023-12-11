@@ -1,3 +1,2 @@
-- operations for every ADT
-- PRIORITY QUEUE!!!!! (what?)
-
+- AVL/2-3-4/Red Black
+- Hashing pt 2
