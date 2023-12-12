@@ -46,61 +46,17 @@ public class Sorts {
             for(j = n - 1; j > i; j--) {
                 if(data[j] < data[j - 1]) {
                     swapped = true;
-                    swap(data, i, j);
+                    swap(data, j, j - 1);
                 }
             }
+            print(data);
             if(!swapped) {
                 return;
             }
         }
     }
 
-    // p1: [left .. mid], p2: [mid + 1 .. right]
-    public static void merge(int data[], int left, int mid, int right) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
-        int[] p1 = new int[n1];
-        int[] p2 = new int[n2];
-        for(int i = 0; i < n1; i++) {
-            p1[i] = data[i + left];
-        }
-        for(int i = 0; i < n2; i++) {
-            p2[i] = data[mid + i + 1];
-        }
-        int i = 0, j = 0, k = left;
-        while(i < n1 && j < n2) {
-            if(p1[i] < p2[j]) {
-                data[k] = p1[i];
-                i++;
-            } else {
-                data[k] = p2[j];
-                j++;
-            }
-            k++;
-        }
-        while(i < n1) {
-            data[k] = p1[i];
-            i++;
-            k++;
-        }
-        while(j < n2) {
-            data[k] = p2[j];
-            j++;
-            k++;
-        }
-    }
-
-    public static void mergeSort(int[] data, int l, int r) {
-        if(l < r) {
-            int m = l + (r - l) / 2;
-            mergeSort(data, l, m);
-            mergeSort(data, m + 1, r);
-            merge(data, l, m, r);
-        }
-    }
-
-    // p1: [first .. n1), p2: [n1 .. n2)
-    public static void merge2(int[] data, int first, int n1, int n2) {
+    public static void merge(int[] data, int first, int n1, int n2) {
         System.out.println("Merging " + first + " " + n1 + " " + n2);
         int[] p1 = new int[n1];
         int[] p2 = new int[n2];
@@ -133,45 +89,30 @@ public class Sorts {
         }
     }
 
-    public static void mergeSort2(int[] data, int first, int n) {
+    public static void mergeSort(int[] data, int first, int n) {
         if(n > 1) {
             int n1 = n / 2;
             int n2 = n - n1;
-            mergeSort2(data, first, n1);
-            mergeSort2(data, first + n1, n2);
-            merge2(data, first, n1, n2);
+            mergeSort(data, first, n1);
+            mergeSort(data, first + n1, n2);
+            merge(data, first, n1, n2);
         }
     }
 
     public static int partition(int[] data, int first, int n) {
-        int pivot = first;
-        int last = first + n - 1;
-        for(int i = last; i > first; i--) {
-            if(data[i] > data[pivot]) {
-                swap(data, i, last);
-                last--;
-            }
-        }
-        swap(data, last, first);
-        return last;
-    }
-
-    public static int partition2(int[] data, int first, int n) {
         int pivot = data[first];
-        int lo = first, hi = first + n - 1;
-        while(lo + 1 < hi) {
-            if(data[lo] <= pivot) {
-                lo++;
-            } else if(data[hi] >= pivot) {
-                hi--;
-            } else {
-                swap(data, lo, hi);
-                lo++;
-                hi--;
-            }
+        int i = first + 1;
+        int j = first + n - 1;
+        while(true) {
+            while(data[i] < pivot && i <= j) i++;
+            while(data[j] > pivot && i <= j) j--;
+            if(i >= j) break;
+            swap(data, i, j);
+            i++;
+            j--;
         }
-        swap(data, lo, first);
-        return lo;
+        swap(data, first, i - 1);
+        return i - 1;
     }
 
     public static void quickSort(int[] data, int first, int n) {
@@ -179,7 +120,7 @@ public class Sorts {
             int pivotIndex = partition(data, first, n);
             int n1 = pivotIndex - first;
             int n2 = n - n1 - 1;
-            quickSort(data, first, n1);
+            quickSort(data, first, n1); 
             quickSort(data, pivotIndex + 1, n2);
         }
     }
@@ -194,12 +135,9 @@ public class Sorts {
                 if(child + 1 < i && data[child + 1] > data[child]) {
                     child++;
                 }
-                if(data[child] > data[pos]) {
-                    int tmp = data[child];
-                    data[child] = data[pos];
-                    data[pos] = tmp;
-                    pos = child;
-                }
+                if(data[pos] >= data[child]) break;
+                swap(data, pos, child);
+                pos = child;
             }
         }
     }
@@ -227,9 +165,12 @@ public class Sorts {
     }
 
     public static void main(String[] args) {
-        int[] data = new int[]{6, 4, 9, 5, 1, 8, 2, 7, 3};
+        // int[] data = new int[]{6, 4, 9, 5, 1, 8, 2, 7, 3};
+        // int[] data = new int[]{75, 20, 1000, 7, 9, 17};
+        int[] data = new int[]{54, 26, 93, 17, 77, 31, 44, 55, 20};
         heapSort(data);
         // quickSort(data, 0, data.length);
+        // qsort(data, 0, data.length - 1);
         // data = new int[]{1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 6, 7, 8, 9, 9, 9};
         // countSort(data, 10);
         print(data);

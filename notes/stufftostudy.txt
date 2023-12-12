@@ -1,2 +1,8 @@
-- AVL/2-3-4/Red Black
-- Hashing pt 2
+- Activation Records/Stack Trace for recursion
+- Go through recitations
+- Max elements/nodes per level for trees
+- BST removing element + implementation for everything
+- Car wash simulation
+- Memorize code implementations for EVERYTHING!!!
+- Understand worst case for all sorts
+- Go over heaps again (fixheap, makeheap, heap impl)

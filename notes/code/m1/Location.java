@@ -45,7 +45,7 @@ public class Location {
         try {
             answer = (Location) super.clone();
         } catch(CloneNotSupportedException e) {
-
+            return null;
         }
         return answer;
     }

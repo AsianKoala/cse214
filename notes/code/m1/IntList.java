@@ -47,7 +47,7 @@ public class IntList {
             head = head.getLink();
         }
         if(head == null) {
-            tail = null
+            tail = null;
         }
         cursor = head;
     }
@@ -88,7 +88,7 @@ public class IntList {
     }
 
     public boolean listPosition(int pos) {
-        if(position <= 0) {
+        if(pos <= 0) {
             // throw something
         }
         IntNode ptr = head;
@@ -112,8 +112,8 @@ public class IntList {
     }
 
     public boolean remove(int target) {
-        IntNode prev, ptr;
-        ptr = head;
+        IntNode prev = null;
+        IntNode ptr = head;
         if(target == ptr.getData()) {
             removeHead();
             return true;
@@ -135,7 +135,7 @@ public class IntList {
 
     public int getNodeData() {
         if(cursor == null) {
-
+            return -1;
         } else {
             return cursor.getData();
         }

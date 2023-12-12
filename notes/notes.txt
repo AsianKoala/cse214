@@ -215,7 +215,7 @@ Car wash simulation
 Recursion (Lecture 5.1)
 -----------------------
 
-Activation RecordsA
+Activation Records
     - When a method calls another method, activation record is stored on system stack
     - Contains:
         - Where to return
@@ -613,7 +613,7 @@ Sorting 1 (Lecture 8.1)
     - Time Complexity:
         - Worst: O(n^2)
         - Special Cases:
-        
+
 
 Sorting 2 (Lecture 8.2)
 ---------------------
@@ -629,6 +629,10 @@ Sorting 2 (Lecture 8.2)
         lo and hi that start at either ends of partition. Increment lo until A[lo] > pivot.
         Decrement hi until A[hi] < pivot. Then swap(A[lo], A[hi]). Continue until lo meets hi.
         Then swap(A[pivot], A[end of first partition])
+    - Worst Case:
+        - Already sorted
+        - Sorted in reverse
+        - All same element
 
 - Heap Sort
     - Make a Heap efficiently, then remove all elements iterate across A from n - 1 => 0

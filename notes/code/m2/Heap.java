@@ -57,9 +57,7 @@ public class Heap {
             if(childpos < heapSize - 1 && data[childpos + 1] > data[childpos]) {
                 childpos++;
             }
-            if(data[position] >= data[childpos]) {
-                return;
-            }
+            if(data[position] >= data[childpos]) break;
             swap(position, childpos);
             position = childpos;
         }
@@ -71,9 +69,7 @@ public class Heap {
             int pos = i;
             while(pos * 2 + 1 < n) {
                 int child = pos * 2 + 1;
-                if(child + 1 < n && arr[child + 1] > arr[child]) {
-                    child++;
-                }
+                if(child + 1 < n && arr[child + 1] > arr[child]) child++;
                 if(arr[child] > arr[pos]) {
                     int tmp = arr[child];
                     arr[child] = arr[pos];
